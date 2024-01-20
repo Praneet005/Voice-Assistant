@@ -17,6 +17,11 @@ def get_current_location():
     location = geocoder.ip('me')
     return location
 
+def display_help():
+    help_text = "Commands are:\ncalculate\ndate\ntime\nlocation\nbye"
+    help_label.config(text=help_text)
+    text_to_speech(help_text)
+
 def handle_user_input():
     user_input = entry.get().lower()
 
@@ -26,7 +31,28 @@ def handle_user_input():
     elif user_input == "how are you":
         text_to_speech("I am great, thanks for asking.")
         entry.delete(0, tk.END)
-
+    elif user_input == "help":
+        display_help()
+        entry.delete(0, tk.END)
+    elif user_input == "bye":
+        text_to_speech("Goodbye, have a nice day!")
+        root.destroy()
+        entry.delete(0, tk.END)
+    elif user_input == "date":
+        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        text_to_speech(f"Today's date is {current_date}.")
+        entry.delete(0, tk.END)
+    elif user_input == "time":
+        current_time = datetime.datetime.now().strftime("%H:%M:%S")
+        text_to_speech(f"The current time is {current_time}.")
+        entry.delete(0, tk.END)
+    elif user_input == "location":
+        current_location = get_current_location()
+        text_to_speech(f"You are currently located at {current_location}.")
+        entry.delete(0, tk.END)
+    elif user_input == "thanks":
+        text_to_speech("You're Welcome")
+        entry.delete(0, tk.END)
     elif user_input == "calculate":
         text_to_speech("Choose an operation: addition, subtraction, multiplication, or division.")
         entry.delete(0, tk.END)
@@ -79,5 +105,8 @@ entry.pack(pady=50)
 
 ask_button = tk.Button(root, text="Ask", command=handle_user_input)
 ask_button.pack()
+
+help_label = tk.Label(root, text="")
+help_label.pack()
 
 root.mainloop()
